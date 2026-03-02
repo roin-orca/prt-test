@@ -1,0 +1,15 @@
+name: PR Target Test
+on:
+  pull_request_target:
+    types: [opened, synchronize]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Safe step from main
+        run: |
+          echo "THIS IS THE MAIN BRANCH WORKFLOW (SAFE)"
+          echo "GITHUB_REF=$GITHUB_REF"
+          echo "GITHUB_SHA=$GITHUB_SHA"
+          echo "github.event.pull_request.base.ref=${{ github.event.pull_request.base.ref }}"

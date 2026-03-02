@@ -7,9 +7,17 @@ jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-      - name: Safe step from main
+      - name: Vulnerable step from branch
         run: |
-          echo "THIS IS THE MAIN BRANCH WORKFLOW (SAFE)"
+          echo "THIS IS THE VULNERABLE BRANCH WORKFLOW"
           echo "GITHUB_REF=$GITHUB_REF"
           echo "GITHUB_SHA=$GITHUB_SHA"
           echo "github.event.pull_request.base.ref=${{ github.event.pull_request.base.ref }}"
+      - name: Checkout PR code unsafely
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+      - name: Run untrusted code
+        run: |
+          echo "RUNNING CODE FROM PR HEAD - THIS IS VULNERABLE"
+          cat README.md
